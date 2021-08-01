@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:include="/mainPages/header :: head"></head>
+<body>
+
+<span th:replace="/mainPages/header :: header"></span>
+
+<div id="banner-area" class="banner-area" th:style="'background-image:url(' + @{/images/banner/banner1.jpg} + ');'">
+  <div class="banner-text">
+    <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+              <div class="banner-heading">
+                <h1 class="banner-title" style="color: black">Car repair order</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                      <li class="breadcrumb-item" style="color: black"><a th:href="@{/}">Home</a></li>
+                      <li class="breadcrumb-item" style="color: black"><a th:href="@{/}">Contact Us</a></li>
+                    </ol>
+                </nav>
+              </div>
+          </div><!-- Col end -->
+        </div><!-- Row end -->
+    </div><!-- Container end -->
+  </div><!-- Banner text end -->
+</div><!-- Banner area end --> 
+
+<section id="main-container" class="main-container">
+  <div class="container">
+
+    <div class="row text-center">
+      <div class="col-12">
+        <h3 class="section-sub-title">Make an appointment</h3>
+      </div>
+    </div>
+    <!--/ Title row end -->
+
+    <div class="row">
+      <div class="col-md-12">
+        <form id="contact-form" th:action="@{/appointmentDate}" method="post" role="form">
+          <div class="error-container"></div>
+          <div class="row text-center">
+            <div class="col-12">
+              <h3>Visit</h3>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-md-3" >
+              <div class="form-group">
+                <label>Choose Visit Date</label>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+                <input type="date" id="txtDate" name="selectedDate" class="form-control form-control-name"/>
+<!--                <input id="selectedDate" name="selectedDate" type="date" class="form-control form-control-name">-->
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Choose Workshop</label>
+                <select name="selectedWorkshop" id="selectedWorkshop" class="form-control form-control-name">
+                  <option th:each="workshop : ${workshopList}" th:value="${workshop.getId()}" th:text="${workshop.getCity() + ', ' + workshop.street + ' ' + workshop.number}"></option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="text-right"><br>
+            <button class="btn btn-primary solid blank" type="submit">Next</button>
+          </div>
+        </form>
+      </div>
+
+    </div><!-- Content row -->
+  </div><!-- Conatiner end -->
+</section><!-- Main container end -->
+
+<script>$(function(){
+  var dtToday = new Date();
+
+  var month = dtToday.getMonth() + 1;
+  var day = dtToday.getDate();
+  var hour = dtToday.getHours()
+  var year = dtToday.getFullYear();
+  if(month < 10)
+    month = '0' + month.toString();
+  if(day < 10)
+    day = '0' + day.toString();
+  if(hour > 13)
+    day = day + 1;
+
+  var maxDate = year + '-' + month + '-' + day;
+
+  // or instead:
+  // var maxDate = dtToday.toISOString().substr(0, 10);
+
+  $('#txtDate').attr('min', maxDate);
+});</script>
+
+
+<span th:replace="/mainPages/footer :: footer"></span>
+  </body>
+
+  </html>
