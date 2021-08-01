@@ -17,6 +17,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query(value = "SELECT * FROM car_workshop_manager.orders WHERE user_id = ?", nativeQuery = true)
     List<Order> findOrdersByUserId(Integer userId);
 
+    @Query(value = "SELECT * FROM car_workshop_manager.orders" +
+            " LEFT JOIN car_workshop_manager.visit_dates ON car_workshop_manager.orders.id = car_workshop_manager.visit_dates.order_id " +
+            "WHERE order_id = ?", nativeQuery = true)
     Order findOrderById(Integer orderId);
 
     @Query(value = "SELECT * FROM car_workshop_manager.orders ORDER BY id DESC LIMIT 3", nativeQuery = true)
@@ -37,7 +40,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query(value = "SELECT  SUM(work_cost) FROM car_workshop_manager.orders",nativeQuery = true)
     Integer findTotalRevenue();
 
-    @Query(value = "SELECT SUM(work_cost) FROM orders INNER JOIN visit_dates ON orders.id = visit_dates.order_id WHERE month = ?1 AND year = ?2",nativeQuery = true)
+    @Query(value = "SELECT SUM(work_cost) FROM car_workshop_manager.orders LEFT JOIN visit_dates ON orders.id = visit_dates.order_id WHERE month = ?1 AND year = ?2",nativeQuery = true)
     Integer findMonthlyRevenue(Integer month, Integer year);
 
 }

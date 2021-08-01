@@ -1,8 +1,7 @@
 package pl.rasilewicz.car_workshop_manager_rest_api.controllers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import lombok.RequiredArgsConstructor;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,18 +17,11 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 
 @Controller
+@RequiredArgsConstructor
 public class RegisterController {
-
-    private final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     private final RoleServiceImpl roleService;
     private final UserServiceImpl userService;
-
-    public RegisterController(RoleServiceImpl roleService, UserServiceImpl userService){
-        this.roleService = roleService;
-        this.userService = userService;
-
-    }
 
     @GetMapping("/registration")
     public String registerForm(Model model){

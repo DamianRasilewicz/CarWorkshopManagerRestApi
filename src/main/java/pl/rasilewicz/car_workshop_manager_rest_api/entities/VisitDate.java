@@ -26,11 +26,6 @@ public class VisitDate {
     private LocalDate date;
     private String time;
 
-    @OneToOne()
-    @JoinColumn(name = "order_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Order order;
-
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Workshop workshop;

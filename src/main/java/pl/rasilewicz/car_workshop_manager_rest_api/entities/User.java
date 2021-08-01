@@ -46,14 +46,6 @@ public class User {
 
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Order> orders = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Car> cars = new ArrayList<>();
-
     @ManyToOne()
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "role_id")

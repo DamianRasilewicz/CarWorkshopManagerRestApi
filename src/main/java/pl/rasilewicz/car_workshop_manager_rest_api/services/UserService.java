@@ -1,12 +1,11 @@
 package pl.rasilewicz.car_workshop_manager_rest_api.services;
 
 
-import org.springframework.security.core.userdetails.UserDetailsService;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.User;
 
 import java.util.List;
 
-public interface UserService extends UserDetailsService {
+public interface UserService {
 
     void save (User user);
 

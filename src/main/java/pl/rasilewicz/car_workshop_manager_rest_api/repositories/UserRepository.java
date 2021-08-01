@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findUserById(Integer id);
 
-    @Query(value = "SELECT * FROM car_workshop_manager.users WHERE NOT user_name = ?;" ,nativeQuery = true)
+    @Query(value = "SELECT * FROM car_workshop_manager.users WHERE NOT user_name = ?" ,nativeQuery = true)
     List<User> findAllUsers(String userName);
 
     @Query(value = "SELECT COUNT(id) FROM car_workshop_manager.users;" ,nativeQuery = true)

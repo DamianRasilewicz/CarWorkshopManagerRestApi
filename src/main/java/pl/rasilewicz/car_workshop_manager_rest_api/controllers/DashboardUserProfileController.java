@@ -1,10 +1,13 @@
 package pl.rasilewicz.car_workshop_manager_rest_api.controllers;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import lombok.RequiredArgsConstructor;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.Role;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.User;
 import pl.rasilewicz.car_workshop_manager_rest_api.services.RoleServiceImpl;
@@ -12,18 +15,13 @@ import pl.rasilewicz.car_workshop_manager_rest_api.services.UserServiceImpl;
 
 import javax.servlet.http.HttpSession;
 
-@Controller
+@RestController
+@RequiredArgsConstructor
 public class DashboardUserProfileController {
 
     private final UserServiceImpl userService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleServiceImpl roleService;
 
-    public DashboardUserProfileController(UserServiceImpl userService, BCryptPasswordEncoder bCryptPasswordEncoder, RoleServiceImpl roleService){
-        this.userService = userService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.roleService = roleService;
-    }
 
     @GetMapping("/dashboard/user/profile")
     public String userProfile (Model model, HttpSession session){
@@ -40,7 +38,7 @@ public class DashboardUserProfileController {
     public String changedUserProfile (User userProfile, String newPassword, HttpSession session){
 
         if (!newPassword.equals("")){
-            userProfile.setPassword(bCryptPasswordEncoder.encode(newPassword));
+            userProfile.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt(12)));
         } else {
             userProfile.setPassword(userProfile.getPassword());
         }

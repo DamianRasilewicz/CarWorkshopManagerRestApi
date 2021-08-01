@@ -1,26 +1,23 @@
 package pl.rasilewicz.car_workshop_manager_rest_api.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.Order;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.Role;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.User;
-import pl.rasilewicz.car_workshop_manager_rest_api.services.MailServiceImpl;
-import pl.rasilewicz.car_workshop_manager_rest_api.services.OrderServiceImpl;
-import pl.rasilewicz.car_workshop_manager_rest_api.services.RoleServiceImpl;
-import pl.rasilewicz.car_workshop_manager_rest_api.services.UserServiceImpl;
+import pl.rasilewicz.car_workshop_manager_rest_api.services.*;
+
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 
-@Controller
+@RestController
+@RequiredArgsConstructor
 public class DashboardAdminUsersController {
 
     private final UserServiceImpl userService;
@@ -28,26 +25,17 @@ public class DashboardAdminUsersController {
     private final OrderServiceImpl orderService;
     private final MailServiceImpl mailService;
     private final TemplateEngine templateEngine;
+    private final VisitDateServiceImpl visitDateService;
 
-    public DashboardAdminUsersController(UserServiceImpl userService, RoleServiceImpl roleService, OrderServiceImpl orderService,
-                                         MailServiceImpl mailService, TemplateEngine templateEngine) {
-        this.userService = userService;
-        this.roleService = roleService;
-        this.orderService = orderService;
-        this.mailService = mailService;
-        this.templateEngine = templateEngine;
+    @GetMapping("/admin/users")
+    public List<User> userList (@RequestParam String withoutUserName) {
+        List<User> userList = userService.findAllUsers(withoutUserName);
+
+        return userList;
     }
 
-    @GetMapping("/dashboard/admin/users")
-    public String userList (Model model, HttpSession session){
-        List<User> userList = userService.findAllUsers((String)session.getAttribute("userName"));
-        model.addAttribute("userList", userList);
-
-        return "dashboardPages/admin/users";
-    }
-
-    @GetMapping("/dashboard/admin/users/edit")
-    public String userDetails (@RequestParam Integer id, Model model){
+    @GetMapping("/admin/users/edit/{id}")
+    public String userDetails (@PathVariable Integer id, Model model){
         User user = userService.findUserById(id);
         model.addAttribute("user", user);
 
@@ -144,10 +132,11 @@ public class DashboardAdminUsersController {
         selectedVisit.setStatus(status);
         orderService.save(selectedVisit);
 
+
         Context context = new Context();
         context.setVariable("selectedVisit", selectedVisit);
-        context.setVariable("visitDate", selectedVisit.getVisitDate());
-        context.setVariable("workshop", selectedVisit.getVisitDate().getWorkshop());
+//        context.setVariable("visitDate", selectedVisit.getVisitDate());
+//        context.setVariable("workshop", selectedVisit.getVisitDate().getWorkshop());
         context.setVariable("car", selectedVisit.getCar());
         context.setVariable("user", selectedVisit.getUser());
         if (selectedVisit.getStatus().equals("Done")){

@@ -1,8 +1,11 @@
 package pl.rasilewicz.car_workshop_manager_rest_api.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.Order;
 import pl.rasilewicz.car_workshop_manager_rest_api.services.MechanicServiceImpl;
 import pl.rasilewicz.car_workshop_manager_rest_api.services.OrderServiceImpl;
@@ -14,7 +17,8 @@ import java.util.*;
 
 import javax.servlet.http.HttpSession;
 
-@Controller
+@RestController
+@RequiredArgsConstructor
 public class DashboardHomeController {
 
     private final OrderServiceImpl orderService;
@@ -22,20 +26,10 @@ public class DashboardHomeController {
     private final UserServiceImpl userService;
     private final MechanicServiceImpl mechanicService;
 
-    public DashboardHomeController(OrderServiceImpl orderService, VisitDateServiceImpl visitDateService, UserServiceImpl userService,
-                                   MechanicServiceImpl mechanicService) {
-        this.orderService = orderService;
-        this.visitDateService = visitDateService;
-        this.userService = userService;
-        this.mechanicService = mechanicService;
-    }
 
     @GetMapping("/dashboard/user/home")
-    public String userHome(Model model, HttpSession session) {
-        List<Order> userLastOrderList = orderService.findLastOrdersByUserId((Integer) session.getAttribute("userId"));
-        model.addAttribute("userOrderList", userLastOrderList);
-
-        Integer userId = (Integer) session.getAttribute("userId");
+    public List<Object> userHome(@RequestParam Integer userId) {
+        List<Order> userLastOrderList = orderService.findLastOrdersByUserId(userId);
 
         List<String> monthsList = Arrays.asList("January", "February", "March", "April", "Mai", "June", "July",
                 "August", "September", "October", "November", "December");
@@ -46,11 +40,11 @@ public class DashboardHomeController {
             dataVisitsChart.put(monthsList.get(i), visitDateService.findNumberOfVisitDatesByMonthByUserId(i + 1, userId));
         }
 
+        List<Object> summary = Arrays.asList(userLastOrderList, dataVisitsChart);
 
-        model.addAttribute("dataVisitsChart", dataVisitsChart);
 
 
-        return "dashboardPages/user/dashboard";
+        return summary;
     }
 
     @GetMapping("/dashboard/admin/home")

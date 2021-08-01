@@ -51,7 +51,7 @@ public class DashboardUserVisitsController {
         Order selectedVisit = orderService.findOrderById(selectedVisitId);
 
         selectedVisit.setCar(carService.findCarById(carId));
-        selectedVisit.setVisitDate(visitDateService.findVisitDateById(visitDateId));
+//        selectedVisit.setVisitDate(visitDateService.findVisitDateById(visitDateId));
         selectedVisit.setComment(wroteComment);
         orderService.save(selectedVisit);
 

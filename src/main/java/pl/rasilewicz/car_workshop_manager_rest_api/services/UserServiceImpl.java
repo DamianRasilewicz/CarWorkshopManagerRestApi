@@ -3,8 +3,6 @@ package pl.rasilewicz.car_workshop_manager_rest_api.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.Role;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.User;
@@ -51,15 +49,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findNumberOfAllUsers();
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUserName(userName);
-        if (user == null) {
-            throw new UsernameNotFoundException("Invalid user email or password.");
-        }
-        logger.error("loadUserByUsername() : {}", userName);
-        return new VLVUserDetails(user);
-    }
 
     @Override
     public Integer findNumberOfMonthlyRegisteredUsers(Integer month, Integer year) {

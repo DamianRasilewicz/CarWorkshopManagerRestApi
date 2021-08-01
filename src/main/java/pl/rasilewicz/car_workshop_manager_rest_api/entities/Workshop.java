@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,9 +21,5 @@ public class Workshop {
     private String street;
     private String number;
 
-    @OneToMany(mappedBy = "workshop")
-    private List<Mechanic> mechanics;
 
-    @OneToMany(mappedBy = "workshop")
-    private List<VisitDate> visitDates = new ArrayList<>();
 }

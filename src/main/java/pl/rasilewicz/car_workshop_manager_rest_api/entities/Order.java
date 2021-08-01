@@ -1,5 +1,6 @@
 package pl.rasilewicz.car_workshop_manager_rest_api.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -61,7 +62,7 @@ public class Order {
     @ManyToOne
     private User user;
 
-    @OneToOne(mappedBy = "order")
+    @OneToOne()
     private VisitDate visitDate;
 
     @ManyToOne
