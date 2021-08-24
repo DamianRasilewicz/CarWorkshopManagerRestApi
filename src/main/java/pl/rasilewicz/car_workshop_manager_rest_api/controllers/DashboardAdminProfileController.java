@@ -25,17 +25,11 @@ public class DashboardAdminProfileController {
         return userProfile;
     }
 
-    @PutMapping("/admin/profiles")
-    public User changedAdminProfile (@RequestBody User userProfile, HttpSession session){
+    @PutMapping("/admins/{userId}/profile")
+    public User editAdminProfile (@PathVariable Integer userId, @RequestBody User editedUser){
 
 
-        Role userRole = roleService.findRoleByName("USER");
-        userProfile.setRole(userRole);
-        userService.save(userProfile);
 
-        session.removeAttribute("userName");
-        session.setAttribute("userName", userProfile.getUserName());
-
-        return userProfile;
+        return ;
     }
 }

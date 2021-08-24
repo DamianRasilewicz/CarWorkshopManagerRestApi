@@ -9,6 +9,7 @@ import pl.rasilewicz.car_workshop_manager_rest_api.entities.User;
 import pl.rasilewicz.car_workshop_manager_rest_api.repositories.RoleRepository;
 import pl.rasilewicz.car_workshop_manager_rest_api.repositories.UserRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -53,5 +54,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer findNumberOfMonthlyRegisteredUsers(Integer month, Integer year) {
         return userRepository.findNumberOfMonthlyRegisteredUsers(month, year);
+    }
+
+    @Override
+    @Transactional
+    public User editUser(User user) {
+        User editedUser = userRepository.findById(user.getId()).orElseThrow();
+        editedUser.setEnabled(user.getEnabled());
+        editedUser.setRole(user.getRole());
+        return editedUser;
     }
 }

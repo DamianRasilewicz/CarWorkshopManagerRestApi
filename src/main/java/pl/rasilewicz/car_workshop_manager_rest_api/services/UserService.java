@@ -21,4 +21,6 @@ public interface UserService {
 
     Integer findNumberOfMonthlyRegisteredUsers(Integer month, Integer year);
 
+    User editUser(User user);
+
 }
