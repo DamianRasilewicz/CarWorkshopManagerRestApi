@@ -31,31 +31,18 @@ public class DashboardAdminUsersController {
     @GetMapping("/admins/{userId}/users")
     public List<User> userList (@PathVariable Integer userId) {
         User loggedInUser = userService.findUserById(userId);
-        List<User> userList = userService.findAllUsersWithoutLogInUser(loggedInUser.getUserName());
 
-        return userList;
+        return userService.findAllUsersWithoutLogInUser(loggedInUser.getUserName());
     }
 
     @GetMapping("/admins/{userId}/users/{id}")
     public User userDetails (@PathVariable Integer userId, @PathVariable Integer id){
-        User user = userService.findUserById(id);
 
-        return user;
+        return userService.findUserById(id);
     }
 
-    @PostMapping("/dashboard/admin/users/edit")
-    public String userDetailsChanged (@ModelAttribute("selectedUserId") Integer selectedUserId, @ModelAttribute("newRole") String newRole,
-                                      @ModelAttribute("newEnabled") Boolean newEnabled, @RequestParam("role") Integer roleId, RedirectAttributes redirectAttributes){
-
-        User editedUser = userService.findUserById(selectedUserId);
-
-        Role selectedRole = roleService.findRoleById(roleId);
-
-        editedUser.setRole(selectedRole);
-        editedUser.setEnabled(newEnabled);
-        userService.save(editedUser);
-
-        redirectAttributes.addAttribute("id", selectedUserId);
+    @PutMapping("/admins/{userId}/users")
+    public String userDetailsChanged (User user){
 
         return "redirect:/dashboard/admin/users/edit?success";
     }
