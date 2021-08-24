@@ -36,18 +36,11 @@ public class DashboardAdminUsersController {
         return userList;
     }
 
-    @GetMapping("/admin/users/edit/{id}")
-    public String userDetails (@PathVariable Integer id, Model model){
+    @GetMapping("/admins/{userId}/users/{id}")
+    public User userDetails (@PathVariable Integer userId, @PathVariable Integer id){
         User user = userService.findUserById(id);
-        model.addAttribute("user", user);
 
-        List<Role> roleList = roleService.findAllRoles();
-        model.addAttribute("roleList", roleList);
-
-        List<Boolean> enabledList = Arrays.asList(true, false);
-        model.addAttribute("enabledList", enabledList);
-
-        return "dashboardPages/admin/userEdit";
+        return user;
     }
 
     @PostMapping("/dashboard/admin/users/edit")
