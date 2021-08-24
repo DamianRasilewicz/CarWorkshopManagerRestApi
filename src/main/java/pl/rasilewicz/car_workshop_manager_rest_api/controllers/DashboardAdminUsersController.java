@@ -42,9 +42,9 @@ public class DashboardAdminUsersController {
     }
 
     @PutMapping("/admins/{userId}/users")
-    public String userDetailsChanged (User user){
+    public User userProfileChanged (User user){
 
-        return "redirect:/dashboard/admin/users/edit?success";
+        return userService.editUser(user);
     }
 
     @GetMapping("/dashboard/admin/users/delete")
