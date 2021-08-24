@@ -3,6 +3,7 @@ package pl.rasilewicz.car_workshop_manager_rest_api.services;
 
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.User;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface UserService {
@@ -21,6 +22,7 @@ public interface UserService {
 
     Integer findNumberOfMonthlyRegisteredUsers(Integer month, Integer year);
 
+    @Transactional
     User editUser(User user);
 
 }

@@ -20,16 +20,15 @@ public class DashboardAdminProfileController {
 
     @GetMapping("/admins/{userId}/profile")
     public User GetAdminProfile (@PathVariable Integer userId){
-        User userProfile = userService.findUserById(userId);
 
-        return userProfile;
+
+        return userService.findUserById(userId);
     }
 
     @PutMapping("/admins/{userId}/profile")
     public User editAdminProfile (@PathVariable Integer userId, @RequestBody User editedUser){
 
 
-
-        return ;
+        return userService.editUser(editedUser);
     }
 }
