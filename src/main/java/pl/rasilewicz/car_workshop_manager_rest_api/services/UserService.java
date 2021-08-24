@@ -13,7 +13,7 @@ public interface UserService {
 
     User findUserById(Integer id);
 
-    List<User> findAllUsers(String userName);
+    List<User> findAllUsersWithoutLogInUser(String userName);
 
     void deleteById(Integer id);
 

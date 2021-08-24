@@ -18,9 +18,9 @@ public class DashboardAdminProfileController {
     private final RoleServiceImpl roleService;
 
 
-    @GetMapping("/admin/profiles/{id}")
-    public User GetAdminProfile (@PathVariable Integer id){
-        User userProfile = userService.findUserById(id);
+    @GetMapping("/admins/{userId}/profile")
+    public User GetAdminProfile (@PathVariable Integer userId){
+        User userProfile = userService.findUserById(userId);
 
         return userProfile;
     }

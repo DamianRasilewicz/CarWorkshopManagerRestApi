@@ -35,8 +35,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllUsers(String userName) {
-        return userRepository.findAllUsers(userName);
+    public List<User> findAllUsersWithoutLogInUser(String userName) {
+        return userRepository.findAllUsersWithoutLogInUser(userName);
     }
 
     @Override

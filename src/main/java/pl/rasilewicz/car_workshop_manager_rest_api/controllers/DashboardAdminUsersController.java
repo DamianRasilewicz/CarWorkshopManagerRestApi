@@ -12,6 +12,7 @@ import pl.rasilewicz.car_workshop_manager_rest_api.entities.Role;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.User;
 import pl.rasilewicz.car_workshop_manager_rest_api.services.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
@@ -27,9 +28,10 @@ public class DashboardAdminUsersController {
     private final TemplateEngine templateEngine;
     private final VisitDateServiceImpl visitDateService;
 
-    @GetMapping("/admin/users")
-    public List<User> userList (@RequestParam String withoutUserName) {
-        List<User> userList = userService.findAllUsers(withoutUserName);
+    @GetMapping("/admins/{userId}/users")
+    public List<User> userList (@PathVariable Integer userId) {
+        User loggedInUser = userService.findUserById(userId);
+        List<User> userList = userService.findAllUsersWithoutLogInUser(loggedInUser.getUserName());
 
         return userList;
     }
@@ -81,14 +83,14 @@ public class DashboardAdminUsersController {
         return "redirect:/dashboard/admin/users?userDeleteSuccess";
     }
 
-    @GetMapping("/dashboard/admin/users/userVisitList")
-    public String userVisitList(Model model, HttpSession session){
-
-        List<User> userList = userService.findAllUsers((String)session.getAttribute("userName"));
-        model.addAttribute("userList", userList);
-
-        return "dashboardPages/admin/userVisitListAllUsers";
-    }
+//    @GetMapping("/dashboard/admin/users/userVisitList")
+//    public String userVisitList(Model model, HttpSession session){
+//
+//        List<User> userList = userService.findAllUsers((String)session.getAttribute("userName"));
+//        model.addAttribute("userList", userList);
+//
+//        return "dashboardPages/admin/userVisitListAllUsers";
+//    }
 
     @GetMapping("/dashboard/admin/users/userVisitList/show")
     public String selectedUserVisitList(@RequestParam Integer userId, Model model){
