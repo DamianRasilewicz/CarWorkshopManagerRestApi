@@ -22,10 +22,10 @@ public interface UserService {
 
     Integer findNumberOfMonthlyRegisteredUsers(Integer month, Integer year);
 
-    @Transactional
+
     User editUser(User user);
 
-    @Transactional
+
     User editProfile(User user);
 
 }

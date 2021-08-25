@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
 public class DashboardAdminProfileController {
 
     private final UserServiceImpl userService;
-    private final RoleServiceImpl roleService;
 
 
     @GetMapping("/admins/{userId}/profile")
@@ -25,10 +24,10 @@ public class DashboardAdminProfileController {
         return userService.findUserById(userId);
     }
 
-    @PutMapping("/admins/{userId}/profile")
-    public User editAdminProfile (@PathVariable Integer userId, @RequestBody User editedProfile){
+    @PutMapping("/admins/{userId}profile")
+    public User editAdminProfile (@PathVariable Integer userId, @RequestBody User user){
 
 
-        return userService.editProfile(editedProfile);
+        return userService.editProfile(user);
     }
 }

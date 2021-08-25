@@ -19,7 +19,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     @Query(value = "SELECT * FROM car_workshop_manager.orders" +
             " LEFT JOIN car_workshop_manager.visit_dates ON car_workshop_manager.orders.id = car_workshop_manager.visit_dates.order_id " +
-            "WHERE order_id = ?", nativeQuery = true)
+            "WHERE id = ?", nativeQuery = true)
     Order findOrderById(Integer orderId);
 
     @Query(value = "SELECT * FROM car_workshop_manager.orders ORDER BY id DESC LIMIT 3", nativeQuery = true)

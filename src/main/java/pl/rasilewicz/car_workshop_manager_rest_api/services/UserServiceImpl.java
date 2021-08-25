@@ -62,19 +62,19 @@ public class UserServiceImpl implements UserService {
         User editedUser = userRepository.findById(user.getId()).orElseThrow();
         editedUser.setEnabled(user.getEnabled());
         editedUser.setRole(user.getRole());
-        return editedUser;
+        return userRepository.save(editedUser);
     }
 
     @Override
     @Transactional
     public User editProfile(User user) {
         User editUserProfile = userRepository.findById(user.getId()).orElseThrow();
-        editUserProfile.setUserName(editUserProfile.getUserName());
-        editUserProfile.setFirstName(editUserProfile.getFirstName());
-        editUserProfile.setLastName(editUserProfile.getLastName());
-        editUserProfile.setPassword(editUserProfile.getPassword());
-        editUserProfile.setEmail(editUserProfile.getEmail());
-        editUserProfile.setPhoneNumber(editUserProfile.getPhoneNumber());
-        return  editUserProfile;
+        editUserProfile.setUserName(user.getUserName());
+        editUserProfile.setFirstName(user.getFirstName());
+        editUserProfile.setLastName(user.getLastName());
+        editUserProfile.setPassword(user.getPassword());
+        editUserProfile.setEmail(user.getEmail());
+        editUserProfile.setPhoneNumber(user.getPhoneNumber());
+        return userRepository.save(editUserProfile);
     }
 }

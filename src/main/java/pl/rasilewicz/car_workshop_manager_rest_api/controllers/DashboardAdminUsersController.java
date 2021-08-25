@@ -36,13 +36,13 @@ public class DashboardAdminUsersController {
     }
 
     @GetMapping("/admins/{userId}/users/{id}")
-    public User userDetails (@PathVariable Integer userId, @PathVariable Integer id){
+    public User userDetails (@PathVariable Integer id){
 
         return userService.findUserById(id);
     }
 
     @PutMapping("/admins/{userId}/users")
-    public User userProfileChanged (User user){
+    public User editUserByAdmin (@RequestBody User user){
 
         return userService.editUser(user);
     }
