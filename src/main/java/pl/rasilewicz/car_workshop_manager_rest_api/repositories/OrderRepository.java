@@ -14,19 +14,19 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query(value = "SELECT * FROM car_workshop_manager.orders WHERE user_id = ? LIMIT 3", nativeQuery = true)
     List<Order> findLastOrdersByUserId (Integer userId);
 
-    @Query(value = "SELECT * FROM car_workshop_manager.orders WHERE user_id = ?", nativeQuery = true)
+    @Query(value = "SELECT o FROM Order o " +
+            "LEFT JOIN FETCH o.car LEFT JOIN FETCH o.user LEFT JOIN FETCH o.visitDate WHERE o.user.id = ?1")
     List<Order> findOrdersByUserId(Integer userId);
 
-    @Query(value = "SELECT * FROM car_workshop_manager.orders" +
-            " LEFT JOIN car_workshop_manager.visit_dates ON car_workshop_manager.orders.visit_date_id = car_workshop_manager.visit_dates.id " +
-            "WHERE id = ?", nativeQuery = true)
+    @Query(value = "SELECT o FROM Order o " +
+            "LEFT JOIN FETCH o.car LEFT JOIN FETCH o.user LEFT JOIN FETCH o.visitDate WHERE o.id = ?1")
     Order findOrderById(Integer orderId);
 
     @Query(value = "SELECT * FROM car_workshop_manager.orders ORDER BY id DESC LIMIT 3", nativeQuery = true)
     List<Order> findLastUsersOrders();
 
-    @Query(value = "SELECT * FROM car_workshop_manager.orders" +
-                    " LEFT JOIN car_workshop_manager.visit_dates ON car_workshop_manager.orders.visit_date_id = car_workshop_manager.visit_dates.id ", nativeQuery = true)
+    @Query(value = "SELECT o FROM Order o " +
+            "LEFT JOIN FETCH o.car LEFT JOIN FETCH o.user LEFT JOIN FETCH o.visitDate")
     List<Order> findAllOrders();
 
     @Query(value = "SELECT * FROM car_workshop_manager.orders WHERE status != 'Done' LIMIT 3", nativeQuery = true)

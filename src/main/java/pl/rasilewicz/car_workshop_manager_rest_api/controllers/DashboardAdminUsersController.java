@@ -60,16 +60,10 @@ public class DashboardAdminUsersController {
         return orderService.findAllOrders();
     }
 
-    @GetMapping("/dashboard/admin/users/userVisitList/show")
-    public String selectedUserVisitList(@RequestParam Integer userId, Model model){
+    @GetMapping("/dashboard/admin/users/{id}/userVisitList")
+    public List<Order> selectedUserVisitList(@PathVariable Integer id){
 
-        List<Order> userOrderList = orderService.findOrdersByUserId(userId);
-        model.addAttribute("userOrderList", userOrderList);
-
-        model.addAttribute("userName", userService.findUserById(userId).getUserName());
-
-
-        return "dashboardPages/admin/userVisitListSelectedUser";
+        return orderService.findOrdersByUserId(id);
     }
 
     @GetMapping("/dashboard/admin/users/userVisitDetails")
@@ -77,9 +71,6 @@ public class DashboardAdminUsersController {
 
         Order selectedOrderDetails = orderService.findOrderById(id);
         model.addAttribute("selectedOrderDetails", selectedOrderDetails);
-
-        List<String> statusList = Arrays.asList("Waiting for approval", "Pending", "In progress", "In progress - delayed",  "Done");
-        model.addAttribute("statusList", statusList);
 
         return "dashboardPages/admin/selectedUserVisitDetails";
     }
