@@ -47,7 +47,6 @@ public class User {
     private String password;
 
     @ManyToOne()
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "role_id")
     private Role role ;
 

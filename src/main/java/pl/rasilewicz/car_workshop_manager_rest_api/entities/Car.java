@@ -2,6 +2,8 @@ package pl.rasilewicz.car_workshop_manager_rest_api.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -34,6 +36,7 @@ public class Car {
     @Range(min = 10, max = 2000, message = "Please input correct engine power")
     private String enginePower;
 
-    @ManyToOne
+    @ManyToOne()
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 }

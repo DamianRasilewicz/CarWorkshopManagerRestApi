@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Table(name = "visitDates")
-public class VisitDate {
+public class  VisitDate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +27,10 @@ public class VisitDate {
     private String time;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Workshop workshop;
 
     @ManyToOne()
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id")
     private User user;
 }

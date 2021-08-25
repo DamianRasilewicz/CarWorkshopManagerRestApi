@@ -59,15 +59,17 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "task_id"))
     private List<Task> tasks;
 
-    @ManyToOne
+    @ManyToOne()
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @OneToOne()
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private VisitDate visitDate;
 
     @ManyToOne
-    @JoinColumn(name = "car_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "car_id")
     private Car car;
 
 }

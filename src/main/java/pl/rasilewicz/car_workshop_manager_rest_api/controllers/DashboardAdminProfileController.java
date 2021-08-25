@@ -25,7 +25,7 @@ public class DashboardAdminProfileController {
     }
 
     @PutMapping("/admins/{userId}profile")
-    public User editAdminProfile (@PathVariable Integer userId, @RequestBody User user){
+    public User editAdminProfile (@RequestBody User user){
 
 
         return userService.editProfile(user);

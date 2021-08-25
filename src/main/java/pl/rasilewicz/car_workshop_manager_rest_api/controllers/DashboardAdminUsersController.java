@@ -47,13 +47,10 @@ public class DashboardAdminUsersController {
         return userService.editUser(user);
     }
 
-    @GetMapping("/dashboard/admin/users/delete")
-    public String viewingAdminConfirmViewDeleteUser (@RequestParam Integer id, Model model){
-        User selectedUser = userService.findUserById(id);
-        model.addAttribute("selectedUser", selectedUser);
-        model.addAttribute("id", id);
+    @DeleteMapping("/admins{userId}/users{id}/delete")
+    public void deleteUser (@PathVariable Integer id){
 
-        return "dashboardPages/admin/confirmationDeleteUser";
+        userService.deleteById(id);
     }
 
     @PostMapping("/dashboard/admin/users/delete")
