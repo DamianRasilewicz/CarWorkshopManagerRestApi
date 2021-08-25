@@ -53,21 +53,12 @@ public class DashboardAdminUsersController {
         userService.deleteById(id);
     }
 
-    @PostMapping("/dashboard/admin/users/delete")
-    public String afterAdminConfirmedBoxDeleteUser (Integer id){
-        userService.deleteById(id);
+    @GetMapping("/admins/{userId}/users/allVisitList")
+    public List<Order> allVisitList(){
 
-        return "redirect:/dashboard/admin/users?userDeleteSuccess";
+
+        return orderService.findAllOrders();
     }
-
-//    @GetMapping("/dashboard/admin/users/userVisitList")
-//    public String userVisitList(Model model, HttpSession session){
-//
-//        List<User> userList = userService.findAllUsers((String)session.getAttribute("userName"));
-//        model.addAttribute("userList", userList);
-//
-//        return "dashboardPages/admin/userVisitListAllUsers";
-//    }
 
     @GetMapping("/dashboard/admin/users/userVisitList/show")
     public String selectedUserVisitList(@RequestParam Integer userId, Model model){

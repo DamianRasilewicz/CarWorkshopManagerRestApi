@@ -18,14 +18,15 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findOrdersByUserId(Integer userId);
 
     @Query(value = "SELECT * FROM car_workshop_manager.orders" +
-            " LEFT JOIN car_workshop_manager.visit_dates ON car_workshop_manager.orders.id = car_workshop_manager.visit_dates.order_id " +
+            " LEFT JOIN car_workshop_manager.visit_dates ON car_workshop_manager.orders.visit_date_id = car_workshop_manager.visit_dates.id " +
             "WHERE id = ?", nativeQuery = true)
     Order findOrderById(Integer orderId);
 
     @Query(value = "SELECT * FROM car_workshop_manager.orders ORDER BY id DESC LIMIT 3", nativeQuery = true)
     List<Order> findLastUsersOrders();
 
-    @Query(value = "SELECT * FROM car_workshop_manager.orders", nativeQuery = true)
+    @Query(value = "SELECT * FROM car_workshop_manager.orders" +
+                    " LEFT JOIN car_workshop_manager.visit_dates ON car_workshop_manager.orders.visit_date_id = car_workshop_manager.visit_dates.id ", nativeQuery = true)
     List<Order> findAllOrders();
 
     @Query(value = "SELECT * FROM car_workshop_manager.orders WHERE status != 'Done' LIMIT 3", nativeQuery = true)
