@@ -60,19 +60,16 @@ public class DashboardAdminUsersController {
         return orderService.findAllOrders();
     }
 
-    @GetMapping("/dashboard/admin/users/{id}/userVisitList")
+    @GetMapping("/admins/{userId}/users/{id}/userVisits")
     public List<Order> selectedUserVisitList(@PathVariable Integer id){
 
         return orderService.findOrdersByUserId(id);
     }
 
-    @GetMapping("/dashboard/admin/users/userVisitDetails")
-    public String selectedUserVisitDetails(@RequestParam Integer id, Model model){
+    @GetMapping("/admins/{userId}/users{id}/userVisits/{visitId}")
+    public Order selectedUserVisitDetails(@PathVariable Integer id, @PathVariable Integer visitId){
 
-        Order selectedOrderDetails = orderService.findOrderById(id);
-        model.addAttribute("selectedOrderDetails", selectedOrderDetails);
-
-        return "dashboardPages/admin/selectedUserVisitDetails";
+        return orderService.findOrderById(visitId);
     }
 
     @PostMapping("/dashboard/admin/users/userVisitDetails")
