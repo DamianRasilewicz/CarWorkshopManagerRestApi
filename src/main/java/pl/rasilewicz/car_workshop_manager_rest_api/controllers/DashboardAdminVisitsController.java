@@ -1,11 +1,8 @@
 package pl.rasilewicz.car_workshop_manager_rest_api.controllers;
 
-import org.springframework.stereotype.Controller;
+import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.Order;
 import pl.rasilewicz.car_workshop_manager_rest_api.services.CarServiceImpl;
@@ -15,25 +12,20 @@ import pl.rasilewicz.car_workshop_manager_rest_api.services.VisitDateServiceImpl
 import java.util.Arrays;
 import java.util.List;
 
-@Controller
+@RestController
+@RequiredArgsConstructor
 public class DashboardAdminVisitsController {
 
     private final OrderServiceImpl orderService;
     private final CarServiceImpl carService;
     private final VisitDateServiceImpl visitDateService;
 
-    public DashboardAdminVisitsController(OrderServiceImpl orderService, CarServiceImpl carService, VisitDateServiceImpl visitDateService){
-        this.orderService = orderService;
-        this.carService = carService;
-        this.visitDateService = visitDateService;
-    }
 
-    @GetMapping("/dashboard/admin/allVisits")
-    public String adminAllVisits (Model model){
-        List<Order> usersOrderList = orderService.findAllOrders();
-        model.addAttribute("usersOrderList", usersOrderList);
+    @GetMapping("/admins/{userId}/allVisits")
+    public List <Order> adminAllVisits (@PathVariable Integer userId){
 
-        return "dashboardPages/admin/allVisits";
+
+        return orderService.findAllOrders();
     }
 
     @GetMapping("/dashboard/admin/allVisits/details")
