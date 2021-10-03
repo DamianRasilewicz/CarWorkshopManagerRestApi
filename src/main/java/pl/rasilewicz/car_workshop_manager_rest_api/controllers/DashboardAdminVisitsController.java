@@ -66,13 +66,11 @@ public class DashboardAdminVisitsController {
         return  "Success";
     }
 
-    @GetMapping("/dashboard/admin/lastVisits/delete")
-    public String viewingAdminConfirmViewDeleteLastVisit (@RequestParam Integer id, Model model){
-        Order selectedVisit = orderService.findOrderById(id);
-        model.addAttribute("selectedVisit", selectedVisit);
-        model.addAttribute("id", id);
+    @DeleteMapping("/admins/{userId}/lastVisits/delete/{visitId}")
+    public void viewingAdminConfirmViewDeleteLastVisit (@PathVariable Integer visitId){
 
-        return "dashboardPages/admin/confirmationDeleteLastVisit";
+        orderService.deleteById(visitId);
+
     }
 
     @PostMapping("/dashboard/admin/lastVisits/delete")
