@@ -28,22 +28,23 @@ public class DashboardAdminVisitsController {
         return orderService.findAllOrders();
     }
 
-    @GetMapping("/dashboard/admin/allVisits/details")
-    public String viewingAdminSelectedVisit (@RequestParam Integer id, Model model){
-        Order selectedVisit = orderService.findOrderById(id);
-        model.addAttribute("selectedVisit", selectedVisit);
+    @GetMapping("/admins/{userId}/allVisits/{visitId}")
+    public List<Object> viewingAdminSelectedVisit (@PathVariable Integer visitId, Model model){
+
+        Order selectedVisit = orderService.findOrderById(visitId);
 
         List<String> statusList = Arrays.asList("Waiting for approval", "Pending", "In progress", "In progress - delayed",  "Done");
-        model.addAttribute("statusList", statusList);
 
-        return "dashboardPages/admin/visitDetails";
+        List<Object> summary = Arrays.asList(selectedVisit, statusList);
+
+        return summary;
     }
 
-    @PostMapping("/dashboard/admin/allVisits/details")
-    public String changeAdminSelectedVisit (@ModelAttribute("selectedVisitId") Integer selectedVisitId, @ModelAttribute("estimatedExecutionTime") Double estimatedExecutionTime, @ModelAttribute("estimatedWorkCost") Integer estimatedWorkCost,
-                                            @ModelAttribute("workingHours") Integer workingHours, @ModelAttribute("workCost") Double workCost, @ModelAttribute("partsCost") Double partsCost,
-                                            @ModelAttribute("finalCost") Double finalCost, @ModelAttribute("moreInformation") String moreInformation, @ModelAttribute("wroteComment") String wroteComment,
-                                            @ModelAttribute("status") String status, RedirectAttributes redirectAttributes){
+    @PutMapping("/admins/{userId}/allVisits/{visitId}")
+    public String changeAdminSelectedVisit (@RequestBody Integer selectedVisitId, @RequestBody Double estimatedExecutionTime, @RequestBody Integer estimatedWorkCost,
+                                            @RequestBody Integer workingHours, @RequestBody Double workCost, @RequestBody Double partsCost,
+                                            @RequestBody Double finalCost, @RequestBody String moreInformation, @RequestBody String wroteComment,
+                                            @RequestBody String status, RedirectAttributes redirectAttributes){
 
         Order selectedVisit = orderService.findOrderById(selectedVisitId);
         selectedVisit.setEstimatedExecutionTime(estimatedExecutionTime);
@@ -62,7 +63,7 @@ public class DashboardAdminVisitsController {
 
 
 
-        return  "redirect:/dashboard/admin/allVisits/details?success";
+        return  "Success";
     }
 
     @GetMapping("/dashboard/admin/lastVisits/delete")

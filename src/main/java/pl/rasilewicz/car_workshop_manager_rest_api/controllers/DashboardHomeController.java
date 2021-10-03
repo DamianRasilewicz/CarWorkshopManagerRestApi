@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.Order;
@@ -27,8 +28,8 @@ public class DashboardHomeController {
     private final MechanicServiceImpl mechanicService;
 
 
-    @GetMapping("/dashboard/user/home")
-    public List<Object> userHome(@RequestParam Integer userId) {
+    @GetMapping("/users/{userId}/home")
+    public List<Object> userHome(@PathVariable Integer userId) {
         List<Order> userLastOrderList = orderService.findLastOrdersByUserId(userId);
 
         List<String> monthsList = Arrays.asList("January", "February", "March", "April", "Mai", "June", "July",
