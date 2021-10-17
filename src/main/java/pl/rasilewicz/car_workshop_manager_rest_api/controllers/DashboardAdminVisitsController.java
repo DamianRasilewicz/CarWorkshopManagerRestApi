@@ -1,5 +1,6 @@
 package pl.rasilewicz.car_workshop_manager_rest_api.controllers;
 
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,18 +32,21 @@ public class DashboardAdminVisitsController {
     }
 
     @GetMapping("/admins/{userId}/allVisits/{visitId}")
-    public Map<Object, String> viewingAdminSelectedVisit (@PathVariable Integer visitId){
+    public String viewingAdminSelectedVisit (@PathVariable Integer visitId){
 
         Order selectedVisit = orderService.findOrderById(visitId);
 
         List<String> statusList = Arrays.asList("Waiting for approval", "Pending", "In progress", "In progress - delayed",  "Done");
 
-        Map<Object, String> summaryReturn = new LinkedHashMap<>();
+        Map<String, Object> summaryResult = new LinkedHashMap<>();
 
-        summaryReturn.put(selectedVisit, "selectedVisit");
-        summaryReturn.put(statusList, "statusList");
+        summaryResult.put("selectedVisit", selectedVisit);
+        summaryResult.put("statusList", statusList);
 
-        return summaryReturn;
+        Gson gson = new Gson();
+        String json = gson.toJson(summaryResult);
+
+        return json;
     }
 
     @PutMapping("/admins/{userId}/allVisits/{visitId}")
@@ -92,15 +96,20 @@ public class DashboardAdminVisitsController {
         return orderService.findAllUndoneOrders();
     }
 
-    @GetMapping("/dashboard/admin/allVisits/allUndoneOrders/details")
-    public String viewingDetailsSelectedUndoneOrder (@RequestParam Integer id, Model model){
-        Order selectedUndoneOrder = orderService.findOrderById(id);
-        model.addAttribute("selectedUndoneOrder", selectedUndoneOrder);
+    @GetMapping("/admins/{userId}/allVisits/allUndoneOrders/{visitId}")
+    public String viewingDetailsSelectedUndoneOrder (@PathVariable Integer visitId){
+        Order selectedUndoneOrder = orderService.findOrderById(visitId);
 
         List<String> statusList = Arrays.asList("Waiting for approval", "Pending", "In progress", "In progress - delayed",  "Done");
-        model.addAttribute("statusList", statusList);
 
-        return "dashboardPages/admin/undoneOrderDetails";
+        Map<String, Object> summaryResult = new LinkedHashMap<>();
+        summaryResult.put("selectedUndoneOrder", selectedUndoneOrder);
+        summaryResult.put("statusList", statusList);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(summaryResult);
+
+        return json;
     }
 
     @PostMapping("/dashboard/admin/allVisits/allUndoneOrders/details")
