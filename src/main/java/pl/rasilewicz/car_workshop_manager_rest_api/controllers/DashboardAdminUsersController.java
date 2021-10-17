@@ -67,7 +67,7 @@ public class DashboardAdminUsersController {
 
     @PutMapping("/admins/{userId}/users/{id}/userVisits/{visitId}")
     public String selectedUserVisitEdited (@RequestBody Order editedOrder){
-        
+
         orderService.editOrder(editedOrder);
 
         Context context = new Context();

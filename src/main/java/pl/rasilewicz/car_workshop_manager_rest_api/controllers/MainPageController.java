@@ -175,7 +175,7 @@ public class MainPageController {
         LocalDate selectedDateParsed = LocalDate.parse(selectedDate);
 
         VisitDate selectedVisitDate = new VisitDate();
-        selectedVisitDate.setDate(selectedDateParsed);
+        selectedVisitDate.setDate(selectedDateParsed.toString());
         selectedVisitDate.setTime(selectedTime);
         selectedVisitDate.setWorkshop(selectedWorkshop);
 //        selectedVisitDate.setOrder(order);

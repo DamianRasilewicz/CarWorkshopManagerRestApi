@@ -23,7 +23,7 @@ public class  VisitDate {
     private Integer day;
     private Integer month;
     private Integer year;
-    private LocalDate date;
+    private String date;
     private String time;
 
     @ManyToOne

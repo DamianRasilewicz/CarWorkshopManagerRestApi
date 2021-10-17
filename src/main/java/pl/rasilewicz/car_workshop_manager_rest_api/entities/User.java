@@ -36,10 +36,10 @@ public class User {
 
     private Boolean registered;
     private Boolean enabled;
-    private LocalDate registeredDate;
-    private Integer registeredDay;
-    private Integer registeredMonth;
-    private Integer registeredYear;
+    private String registeredDate;
+    private String registeredDay;
+    private String registeredMonth;
+    private String registeredYear;
 
     @Size(min = 3, max = 30, message = "Please input correct user name")
     private String userName;
@@ -50,4 +50,10 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role ;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "registeredDate=" + registeredDate +
+                '}';
+    }
 }

@@ -38,10 +38,10 @@ public class RegisterController {
         user.setRegistered(true);
         user.setEnabled(true);
         LocalDate registeredDate = LocalDate.now();
-        user.setRegisteredDate(registeredDate);
-        user.setRegisteredDay(registeredDate.getDayOfMonth());
-        user.setRegisteredMonth(registeredDate.getMonthValue());
-        user.setRegisteredYear(registeredDate.getYear());
+        user.setRegisteredDate(registeredDate.toString());
+        user.setRegisteredDay(String.valueOf(registeredDate.getDayOfMonth()));
+        user.setRegisteredMonth(String.valueOf(registeredDate.getMonthValue()));
+        user.setRegisteredYear(String.valueOf(registeredDate.getYear()));
 
         Role userRole = roleService.findRoleByName("USER");
         user.setRole(userRole);

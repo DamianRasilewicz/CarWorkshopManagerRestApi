@@ -1,5 +1,6 @@
 package pl.rasilewicz.car_workshop_manager_rest_api.controllers;
 
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +30,7 @@ public class DashboardHomeController {
 
 
     @GetMapping("/users/{userId}/home")
-    public List<Object> userHome(@PathVariable Integer userId) {
+    public String userHome(@PathVariable Integer userId) {
         List<Order> userLastOrderList = orderService.findLastOrdersByUserId(userId);
 
         List<String> monthsList = Arrays.asList("January", "February", "March", "April", "Mai", "June", "July",
@@ -43,12 +44,13 @@ public class DashboardHomeController {
 
         List<Object> summary = Arrays.asList(userLastOrderList, dataVisitsChart);
 
+        Gson gson = new Gson();
+        String json = gson.toJson(summary);
 
-
-        return summary;
+        return json;
     }
 
-    @GetMapping("/dashboard/admin/home")
+    @GetMapping("/admins/{userId}/home")
     public String adminIndex(Model model, HttpSession session) {
         List<Order> usersLastOrderList = orderService.findLastUsersOrders();
         model.addAttribute("usersOrderList", usersLastOrderList);
