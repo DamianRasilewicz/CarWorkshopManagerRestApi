@@ -71,35 +71,25 @@ public class DashboardAdminVisitsController {
         return  "Success";
     }
 
-    @DeleteMapping("/admins/{userId}/lastVisits/delete/{visitId}")
+    @DeleteMapping("/admins/{userId}/lastVisits/{visitId}/delete")
     public void DeleteLastVisit (@PathVariable Integer visitId){
 
         orderService.deleteById(visitId);
 
     }
 
-    @GetMapping("/admins/")
-    public String viewingConfirmViewDeleteVisit (@RequestParam Integer id, Model model){
-        Order selectedVisit = orderService.findOrderById(id);
-        model.addAttribute("selectedVisit", selectedVisit);
-        model.addAttribute("id", id);
 
-        return "dashboardPages/admin/confirmationDeleteVisit";
+    @DeleteMapping("/admins/{userId}/allVisits/{visitId}/delete")
+    public void DeleteVisit (@PathVariable Integer visitId){
+
+        orderService.deleteById(visitId);
+
     }
 
-    @PostMapping("/dashboard/admin/allVisits/delete")
-    public String afterConfirmedBoxDeleteVisit (Integer id){
-        orderService.deleteById(id);
+    @GetMapping("/admins/{userId}/allVisits/allUndoneOrders")
+    public List<Order> viewingAllUndoneOrders (){
 
-        return "redirect:/dashboard/admin/allVisits?visitDeleteSuccess";
-    }
-
-    @GetMapping("/dashboard/admin/allVisits/allUndoneOrders")
-    public String viewingAllUndoneOrders (Model model){
-        List<Order> undoneOrderList = orderService.findAllUndoneOrders();
-        model.addAttribute("undoneOrderList", undoneOrderList);
-
-        return "dashboardPages/admin/allUndoneOrders";
+        return orderService.findAllUndoneOrders();
     }
 
     @GetMapping("/dashboard/admin/allVisits/allUndoneOrders/details")

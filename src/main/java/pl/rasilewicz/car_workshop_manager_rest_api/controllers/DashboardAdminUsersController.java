@@ -39,7 +39,7 @@ public class DashboardAdminUsersController {
         return userService.editUser(user);
     }
 
-    @DeleteMapping("/admins{userId}/users{id}/delete")
+    @DeleteMapping("/admins{userId}/users/{id}/delete")
     public void deleteUser (@PathVariable Integer id){
 
         userService.deleteById(id);
@@ -58,7 +58,7 @@ public class DashboardAdminUsersController {
         return orderService.findOrdersByUserId(id);
     }
 
-    @GetMapping("/admins/{userId}/users{id}/userVisits/{visitId}")
+    @GetMapping("/admins/{userId}/users/{id}/userVisits/{visitId}")
     public Order selectedUserVisitDetails(@PathVariable Integer id, @PathVariable Integer visitId){
 
         return orderService.findOrderById(visitId);
