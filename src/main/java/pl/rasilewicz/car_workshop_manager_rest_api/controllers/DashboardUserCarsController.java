@@ -2,9 +2,7 @@ package pl.rasilewicz.car_workshop_manager_rest_api.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.Car;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.Order;
@@ -15,6 +13,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+@RestController
 @Controller
 public class DashboardUserCarsController {
 
@@ -26,12 +25,11 @@ public class DashboardUserCarsController {
         this.carService = carService;
     }
 
-    @GetMapping("/dashboard/user/cars")
-    public String userCarsList (Model model, HttpSession session){
-        List<Car> userCarList = carService.findCarsByUserId((Integer)session.getAttribute("userId"));
-        model.addAttribute("userCarList", userCarList);
+    @GetMapping("/users/{userId}/cars")
+    public List<Car> userCarsList (@PathVariable Integer userId){
+        List<Car> userCarList = carService.findCarsByUserId((userId));
 
-        return "dashboardPages/user/cars";
+        return userCarList;
     }
 
     @GetMapping("/dashboard/user/cars/edit")
