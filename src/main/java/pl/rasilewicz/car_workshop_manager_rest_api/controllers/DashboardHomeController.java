@@ -42,18 +42,21 @@ public class DashboardHomeController {
             dataVisitsChart.put(monthsList.get(i), visitDateService.findNumberOfVisitDatesByMonthByUserId(i + 1, userId));
         }
 
-        List<Object> summary = Arrays.asList(userLastOrderList, dataVisitsChart);
+        Map<String, Object> summaryResult = new LinkedHashMap<>();
+        summaryResult.put("userLastOrderList", userLastOrderList);
+        summaryResult.put("dataVisitsChart", dataVisitsChart);
+        summaryResult.put("monthsList", monthsList);
 
         Gson gson = new Gson();
-        String json = gson.toJson(summary);
+        String json = gson.toJson(summaryResult);
 
         return json;
     }
 
     @GetMapping("/admins/{userId}/home")
-    public String adminIndex(Model model, HttpSession session) {
+    public String adminIndex(@PathVariable Integer userId) {
+
         List<Order> usersLastOrderList = orderService.findLastUsersOrders();
-        model.addAttribute("usersOrderList", usersLastOrderList);
 
         List<String> monthsList = Arrays.asList("January", "February", "March", "April", "Mai", "June", "July",
                 "August", "September", "October", "November", "December");
@@ -76,29 +79,18 @@ public class DashboardHomeController {
             dataRegisteredUsersChart.put(monthsList.get(i), userService.findNumberOfMonthlyRegisteredUsers(i + 1, presentYear));
         }
 
-        model.addAttribute("dataVisitsChart", dataVisitsChart);
-        model.addAttribute("dataRevenuesChart", dataRevenuesChart);
-        model.addAttribute("dataRegisteredUsersChart", dataRegisteredUsersChart);
-        model.addAttribute("presentYear", presentYear);
-
         List<Order> threeUndoneOrderList = orderService.findThreeUndoneOrders();
-        model.addAttribute("threeUndoneOrderList", threeUndoneOrderList);
 
         List<Order> undoneOrderList = orderService.findAllUndoneOrders();
         Integer numberOfUndoneOrders = undoneOrderList.size();
-        model.addAttribute("numberOfUndoneOrders", numberOfUndoneOrders);
 
         Integer numberOfAllOrders = orderService.findNumberOfAllOrders();
-        model.addAttribute("numberOfAllOrders", numberOfAllOrders);
 
         Integer numberOfAllUsers = userService.findNumberOfAllUsers();
-        model.addAttribute("numberOfAllUsers", numberOfAllUsers);
 
         Integer totalRevenue = orderService.findTotalRevenue();
-        model.addAttribute("totalRevenue", totalRevenue);
 
         Integer numberOfAllMechanics = mechanicService.findNumberOfMechanics();
-        model.addAttribute("numberOfAllMechanics", numberOfAllMechanics);
 
         return "dashboardPages/admin/dashboard";
 
