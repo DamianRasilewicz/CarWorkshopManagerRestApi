@@ -2,11 +2,8 @@ package pl.rasilewicz.car_workshop_manager_rest_api.controllers;
 
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.Order;
 import pl.rasilewicz.car_workshop_manager_rest_api.services.MechanicServiceImpl;
@@ -17,8 +14,6 @@ import pl.rasilewicz.car_workshop_manager_rest_api.services.VisitDateServiceImpl
 import java.time.LocalDate;
 import java.util.*;
 
-import javax.servlet.http.HttpSession;
-
 @RestController
 @RequiredArgsConstructor
 public class DashboardHomeController {
@@ -27,7 +22,6 @@ public class DashboardHomeController {
     private final VisitDateServiceImpl visitDateService;
     private final UserServiceImpl userService;
     private final MechanicServiceImpl mechanicService;
-
 
     @GetMapping("/users/{userId}/home")
     public String userHome(@PathVariable Integer userId) {

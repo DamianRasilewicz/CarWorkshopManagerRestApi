@@ -15,11 +15,9 @@ import java.util.List;
 public class DashboardAdminUsersController {
 
     private final UserServiceImpl userService;
-    private final RoleServiceImpl roleService;
     private final OrderServiceImpl orderService;
     private final MailServiceImpl mailService;
     private final TemplateEngine templateEngine;
-    private final VisitDateServiceImpl visitDateService;
 
     @GetMapping("/admins/{userId}/users")
     public List<User> userList (@PathVariable Integer userId) {

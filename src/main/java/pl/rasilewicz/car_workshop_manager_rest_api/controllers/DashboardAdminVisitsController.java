@@ -15,9 +15,6 @@ import java.util.*;
 public class DashboardAdminVisitsController {
 
     private final OrderServiceImpl orderService;
-    private final CarServiceImpl carService;
-    private final VisitDateServiceImpl visitDateService;
-
 
     @GetMapping("/admins/{userId}/allVisits")
     public List <Order> adminAllVisits (@PathVariable Integer userId){
