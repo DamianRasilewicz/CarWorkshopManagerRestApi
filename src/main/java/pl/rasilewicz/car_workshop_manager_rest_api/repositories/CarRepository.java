@@ -16,5 +16,4 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
 
     @Query(value = "SELECT * FROM car_workshop_manager.cars WHERE user_id = ?", nativeQuery = true)
     List<Car> findCarsByUserId(Integer userId);
-
 }

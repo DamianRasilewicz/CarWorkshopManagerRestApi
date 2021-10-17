@@ -32,38 +32,22 @@ public class DashboardUserCarsController {
         return userCarList;
     }
 
-    @GetMapping("/dashboard/user/cars/edit")
-    public String userCarEditing (@RequestParam Integer id, Model model){
-        Car editingCar = carService.findCarById(id);
-        model.addAttribute("editingCar", editingCar);
+    @GetMapping("/users/{userId}/cars/{carId}/edit")
+    public Car userCarView (@PathVariable Integer carId){
+        Car editingCar = carService.findCarById(carId);
 
-        return "dashboardPages/user/carEdit";
+        return editingCar;
     }
 
-    @PostMapping("/dashboard/user/cars/edit")
-    public String editedUserCar (Car editingCar, HttpSession session, RedirectAttributes redirectAttributes){
-        User user = userService.findUserById((Integer) session.getAttribute("userId"));
-        editingCar.setUser(user);
-        carService.save(editingCar);
+    @PutMapping("/users/{userId}/cars/{carId}/edit")
+    public Car editedUserCar (@RequestBody Car car){
 
-        redirectAttributes.addAttribute("id", editingCar.getId());
-
-        return "redirect:/dashboard/user/cars/edit?success";
+        return carService.editCar(car);
     }
 
-    @GetMapping("/dashboard/user/cars/delete")
-    public String viewingConfirmViewDeleteCar (@RequestParam Integer id, Model model){
-        Car selectedCar = carService.findCarById(id);
-        model.addAttribute("selectedCar", selectedCar);
-        model.addAttribute("id", id);
+    @DeleteMapping("users/{userId}/cars/{carId}/delete")
+    public void DeleteCar (@PathVariable Integer carId){
 
-        return "dashboardPages/user/confirmationDeleteCar";
-    }
-
-    @PostMapping("/dashboard/user/cars/delete")
-    public String afterConfirmedBoxDeleteCar (Integer id){
-        carService.deleteById(id);
-
-        return "redirect:/dashboard/user/cars?carDeleteSuccess";
+        carService.deleteById(carId);
     }
 }
