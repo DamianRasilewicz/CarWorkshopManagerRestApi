@@ -54,7 +54,7 @@ public class DashboardHomeController {
     }
 
     @GetMapping("/admins/{userId}/home")
-    public String adminIndex(@PathVariable Integer userId) {
+    public String adminHome() {
 
         List<Order> usersLastOrderList = orderService.findLastUsersOrders();
 
@@ -92,7 +92,23 @@ public class DashboardHomeController {
 
         Integer numberOfAllMechanics = mechanicService.findNumberOfMechanics();
 
-        return "dashboardPages/admin/dashboard";
+        Map<String, Object> summaryResult= new LinkedHashMap<>();
+        summaryResult.put("usersLastOrderList", usersLastOrderList);
+        summaryResult.put("monthsList", monthsList);
+        summaryResult.put("dataVisitsChart", dataVisitsChart);
+        summaryResult.put("dataRevenuesChart", dataRevenuesChart);
+        summaryResult.put("dataRegisteredUsersChart", dataRegisteredUsersChart);
+        summaryResult.put("threeUndoneOrderList", threeUndoneOrderList);
+        summaryResult.put("numberOfUndoneOrders", numberOfUndoneOrders);
+        summaryResult.put("numberOfAllOrders", numberOfAllOrders);
+        summaryResult.put("numberOfAllUsers", numberOfAllUsers);
+        summaryResult.put("totalRevenue", totalRevenue);
+        summaryResult.put("numberOfAllMechanics", numberOfAllMechanics);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(summaryResult);
+
+        return json;
 
     }
 }
