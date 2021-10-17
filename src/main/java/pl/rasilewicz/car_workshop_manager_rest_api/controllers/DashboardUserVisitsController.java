@@ -1,39 +1,25 @@
 package pl.rasilewicz.car_workshop_manager_rest_api.controllers;
 
-import org.springframework.stereotype.Controller;
+import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.Order;
 import pl.rasilewicz.car_workshop_manager_rest_api.services.CarServiceImpl;
 import pl.rasilewicz.car_workshop_manager_rest_api.services.OrderServiceImpl;
-import pl.rasilewicz.car_workshop_manager_rest_api.services.VisitDateServiceImpl;
-
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@RestController
+@RequiredArgsConstructor
 public class DashboardUserVisitsController {
 
     private final OrderServiceImpl orderService;
     private final CarServiceImpl carService;
-    private final VisitDateServiceImpl visitDateService;
 
-    public DashboardUserVisitsController(OrderServiceImpl orderService, CarServiceImpl carService, VisitDateServiceImpl visitDateService){
-        this.orderService = orderService;
-        this.carService = carService;
-        this.visitDateService = visitDateService;
-    }
+    @GetMapping("/users/{userId}/visits")
+    public List<Order> userVisits (@PathVariable Integer userId){
 
-    @GetMapping("/dashboard/user/visits")
-    public String userVisits (Model model, HttpSession session){
-        List<Order> userOrderList = orderService.findOrdersByUserId((Integer)session.getAttribute("userId"));
-        model.addAttribute("userOrderList", userOrderList);
-
-        return "dashboardPages/user/visits";
+        return orderService.findOrdersByUserId(userId);
     }
 
     @GetMapping("/dashboard/user/visits/details")
