@@ -67,20 +67,13 @@ public class DashboardAdminVisitsController {
     }
 
     @DeleteMapping("/admins/{userId}/lastVisits/delete/{visitId}")
-    public void viewingAdminConfirmViewDeleteLastVisit (@PathVariable Integer visitId){
+    public void DeleteLastVisit (@PathVariable Integer visitId){
 
         orderService.deleteById(visitId);
 
     }
 
-    @PostMapping("/dashboard/admin/lastVisits/delete")
-    public String afterAdminConfirmedBoxDeleteLastVisit (Integer id){
-        orderService.deleteById(id);
-
-        return "redirect:/dashboard/admin/home?lastVisitDeleteSuccess";
-    }
-
-    @GetMapping("/dashboard/admin/allVisits/delete")
+    @GetMapping("/admins/")
     public String viewingConfirmViewDeleteVisit (@RequestParam Integer id, Model model){
         Order selectedVisit = orderService.findOrderById(id);
         model.addAttribute("selectedVisit", selectedVisit);
