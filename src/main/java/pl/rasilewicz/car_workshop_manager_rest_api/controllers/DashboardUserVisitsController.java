@@ -22,12 +22,10 @@ public class DashboardUserVisitsController {
         return orderService.findOrdersByUserId(userId);
     }
 
-    @GetMapping("/dashboard/user/visits/details")
-    public String viewingSelectedVisit (@RequestParam Integer id, Model model){
-        Order selectedVisit = orderService.findOrderById(id);
-        model.addAttribute("selectedVisit", selectedVisit);
+    @GetMapping("/users/{userId}/visits/{visitId}/details")
+    public Order viewingSelectedVisit (@PathVariable Integer visitId){
 
-        return "dashboardPages/user/visitDetails";
+        return orderService.findOrderById(visitId);
     }
 
     @PostMapping("/dashboard/user/visits/details")
