@@ -10,7 +10,9 @@ import pl.rasilewicz.car_workshop_manager_rest_api.services.OrderServiceImpl;
 import pl.rasilewicz.car_workshop_manager_rest_api.services.VisitDateServiceImpl;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,15 +31,18 @@ public class DashboardAdminVisitsController {
     }
 
     @GetMapping("/admins/{userId}/allVisits/{visitId}")
-    public List<Object> viewingAdminSelectedVisit (@PathVariable Integer visitId, Model model){
+    public Map<Object, String> viewingAdminSelectedVisit (@PathVariable Integer visitId){
 
         Order selectedVisit = orderService.findOrderById(visitId);
 
         List<String> statusList = Arrays.asList("Waiting for approval", "Pending", "In progress", "In progress - delayed",  "Done");
 
-        List<Object> summary = Arrays.asList(selectedVisit, statusList);
+        Map<Object, String> summaryReturn = new LinkedHashMap<>();
 
-        return summary;
+        summaryReturn.put(selectedVisit, "selectedVisit");
+        summaryReturn.put(statusList, "statusList");
+
+        return summaryReturn;
     }
 
     @PutMapping("/admins/{userId}/allVisits/{visitId}")
