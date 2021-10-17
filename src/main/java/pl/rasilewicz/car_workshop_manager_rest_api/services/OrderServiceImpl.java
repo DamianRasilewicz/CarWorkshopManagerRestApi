@@ -3,8 +3,10 @@ package pl.rasilewicz.car_workshop_manager_rest_api.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.Order;
+import pl.rasilewicz.car_workshop_manager_rest_api.entities.User;
 import pl.rasilewicz.car_workshop_manager_rest_api.repositories.OrderRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -76,5 +78,22 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer findMonthlyRevenue(Integer month, Integer year) {
         return orderRepository.findMonthlyRevenue(month, year);
+    }
+
+    @Override
+    @Transactional
+    public Order editOrder(Order order) {
+        Order editOrder = orderRepository.findOrderById(order.getId());
+        editOrder.setEstimatedExecutionTime(order.getEstimatedExecutionTime());
+        editOrder.setEstimatedWorkCost(order.getEstimatedWorkCost());
+        editOrder.setWorkingHours(order.getWorkingHours());
+        editOrder.setWorkCost(order.getWorkCost());
+        editOrder.setPartsCost(order.getPartsCost());
+        editOrder.setFinalCost(order.getFinalCost());
+        editOrder.setMoreInformation(order.getMoreInformation());
+        editOrder.setComment(order.getComment());
+        editOrder.setStatus(order.getStatus());
+
+        return orderRepository.save(editOrder);
     }
 }

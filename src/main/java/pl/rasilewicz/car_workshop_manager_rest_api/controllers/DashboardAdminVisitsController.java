@@ -50,29 +50,9 @@ public class DashboardAdminVisitsController {
     }
 
     @PutMapping("/admins/{userId}/allVisits/{visitId}")
-    public String changeAdminSelectedVisit (@RequestBody Integer selectedVisitId, @RequestBody Double estimatedExecutionTime, @RequestBody Integer estimatedWorkCost,
-                                            @RequestBody Integer workingHours, @RequestBody Double workCost, @RequestBody Double partsCost,
-                                            @RequestBody Double finalCost, @RequestBody String moreInformation, @RequestBody String wroteComment,
-                                            @RequestBody String status, RedirectAttributes redirectAttributes){
+    public Order changeAdminSelectedVisit (@RequestBody Order order){
 
-        Order selectedVisit = orderService.findOrderById(selectedVisitId);
-        selectedVisit.setEstimatedExecutionTime(estimatedExecutionTime);
-        selectedVisit.setEstimatedWorkCost(estimatedWorkCost);
-        selectedVisit.setWorkingHours(workingHours);
-        selectedVisit.setWorkCost(workCost);
-        selectedVisit.setPartsCost(partsCost);
-        selectedVisit.setFinalCost(finalCost);
-        selectedVisit.setMoreInformation(moreInformation);
-        selectedVisit.setComment(wroteComment);
-        selectedVisit.setStatus(status);
-        orderService.save(selectedVisit);
-
-
-        redirectAttributes.addAttribute("id", selectedVisit.getId());
-
-
-
-        return  "Success";
+        return  orderService.editOrder(order);
     }
 
     @DeleteMapping("/admins/{userId}/lastVisits/{visitId}/delete")
@@ -112,31 +92,31 @@ public class DashboardAdminVisitsController {
         return json;
     }
 
-//    @PostMapping("/dashboard/admin/allVisits/allUndoneOrders/details")
-//    public String changedUndoneSelectedOrder (@ModelAttribute("selectedVisitId") Integer selectedVisitId, @ModelAttribute("estimatedExecutionTime") Double estimatedExecutionTime, @ModelAttribute("estimatedWorkCost") Integer estimatedWorkCost,
-//                                              @ModelAttribute("workingHours") Integer workingHours, @ModelAttribute("workCost") Double workCost, @ModelAttribute("partsCost") Double partsCost,
-//                                              @ModelAttribute("finalCost") Double finalCost, @ModelAttribute("moreInformation") String moreInformation, @ModelAttribute("wroteComment") String wroteComment,
-//                                              @ModelAttribute("status") String status, RedirectAttributes redirectAttributes){
-//
-//        Order selectedVisit = orderService.findOrderById(selectedVisitId);
-//        selectedVisit.setEstimatedExecutionTime(estimatedExecutionTime);
-//        selectedVisit.setEstimatedWorkCost(estimatedWorkCost);
-//        selectedVisit.setWorkingHours(workingHours);
-//        selectedVisit.setWorkCost(workCost);
-//        selectedVisit.setPartsCost(partsCost);
-//        selectedVisit.setFinalCost(finalCost);
-//        selectedVisit.setMoreInformation(moreInformation);
-//        selectedVisit.setComment(wroteComment);
-//        selectedVisit.setStatus(status);
-//        orderService.save(selectedVisit);
-//
-//
-//        redirectAttributes.addAttribute("id", selectedVisit.getId());
-//
-//
-//
-//        return  "redirect:/dashboard/admin/allVisits/allUndoneOrders/details?success";
-//    }
+    @PutMapping("/dashboard/admin/allVisits/allUndoneOrders/details")
+    public String changedUndoneSelectedOrder (@ModelAttribute("selectedVisitId") Integer selectedVisitId, @ModelAttribute("estimatedExecutionTime") Double estimatedExecutionTime, @ModelAttribute("estimatedWorkCost") Integer estimatedWorkCost,
+                                              @ModelAttribute("workingHours") Integer workingHours, @ModelAttribute("workCost") Double workCost, @ModelAttribute("partsCost") Double partsCost,
+                                              @ModelAttribute("finalCost") Double finalCost, @ModelAttribute("moreInformation") String moreInformation, @ModelAttribute("wroteComment") String wroteComment,
+                                              @ModelAttribute("status") String status, RedirectAttributes redirectAttributes){
+
+        Order selectedVisit = orderService.findOrderById(selectedVisitId);
+        selectedVisit.setEstimatedExecutionTime(estimatedExecutionTime);
+        selectedVisit.setEstimatedWorkCost(estimatedWorkCost);
+        selectedVisit.setWorkingHours(workingHours);
+        selectedVisit.setWorkCost(workCost);
+        selectedVisit.setPartsCost(partsCost);
+        selectedVisit.setFinalCost(finalCost);
+        selectedVisit.setMoreInformation(moreInformation);
+        selectedVisit.setComment(wroteComment);
+        selectedVisit.setStatus(status);
+        orderService.save(selectedVisit);
+
+
+        redirectAttributes.addAttribute("id", selectedVisit.getId());
+
+
+
+        return  "redirect:/dashboard/admin/allVisits/allUndoneOrders/details?success";
+    }
 
     @DeleteMapping("/admins/{userId}/allVisits/allUndoneOrders/{visitId}/delete")
     public void deletingSelectedUndoneOrder (@PathVariable Integer visitId){
