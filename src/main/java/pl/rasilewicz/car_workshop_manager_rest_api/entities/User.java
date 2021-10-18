@@ -42,7 +42,7 @@ public class User {
     private String registeredYear;
 
     @Size(min = 3, max = 30, message = "Please input correct user name")
-    private String userName;
+    private String username;
 
     private String password;
 

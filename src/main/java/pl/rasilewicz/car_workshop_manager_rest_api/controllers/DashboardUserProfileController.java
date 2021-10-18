@@ -36,7 +36,7 @@ public class DashboardUserProfileController {
         userProfile.setEmail(user.getEmail());
         userProfile.setLastName(user.getLastName());
         userProfile.setFirstName(user.getFirstName());
-        userProfile.setUserName(user.getUserName());
+        userProfile.setUsername(user.getUsername());
         userService.save(userProfile);
 
         return userProfile;

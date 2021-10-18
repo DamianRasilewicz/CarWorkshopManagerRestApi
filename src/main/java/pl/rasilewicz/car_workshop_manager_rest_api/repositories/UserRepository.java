@@ -11,11 +11,11 @@ import java.util.List;
 @EntityScan(basePackages = "pl.rasilewicz.car_workshop_manager.entities")
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    User findUserByUserName(String userName);
+    User findUserByUsername(String username);
 
     User findUserById(Integer id);
 
-    @Query(value = "SELECT * FROM car_workshop_manager.users WHERE NOT user_name = ?" ,nativeQuery = true)
+    @Query(value = "SELECT * FROM car_workshop_manager.users WHERE NOT username = ?" ,nativeQuery = true)
     List<User> findAllUsersWithoutLogInUser(String userName);
 
     @Query(value = "SELECT COUNT(id) FROM car_workshop_manager.users;" ,nativeQuery = true)

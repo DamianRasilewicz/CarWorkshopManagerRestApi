@@ -26,8 +26,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUserName(String userName) {
-        return userRepository.findUserByUserName(userName);
+    public User findByUsername(String username) {
+        return userRepository.findUserByUsername(username);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User editProfile(User user) {
         User editUserProfile = userRepository.findById(user.getId()).orElseThrow();
-        editUserProfile.setUserName(user.getUserName());
+        editUserProfile.setUsername(user.getUsername());
         editUserProfile.setFirstName(user.getFirstName());
         editUserProfile.setLastName(user.getLastName());
         editUserProfile.setPassword(user.getPassword());

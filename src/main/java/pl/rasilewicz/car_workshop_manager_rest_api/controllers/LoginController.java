@@ -31,14 +31,14 @@ public class LoginController {
     @PostMapping("/login")
     public User loggedUser (@ModelAttribute("user") User user, @RequestParam String userName, @RequestParam String password, BindingResult result, HttpSession session) {
 
-        if (userService.findByUserName(userName) == null) {
+        if (userService.findByUsername(userName) == null) {
             System.out.println("incorrect userName!");
         }
 
-        User inputtedUser = userService.findByUserName(userName);
+        User inputtedUser = userService.findByUsername(userName);
 
         if (inputtedUser.getPassword().equals(password)) {
-            session.setAttribute("userName", inputtedUser.getUserName());
+            session.setAttribute("userName", inputtedUser.getUsername());
             session.setAttribute("userId", inputtedUser.getId());
             if (inputtedUser.getRole().getName().equals("USER")) {
                 return null;

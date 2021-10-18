@@ -10,11 +10,11 @@ public interface UserService {
 
     void save (User user);
 
-    User findByUserName(String userName);
+    User findByUsername(String username);
 
     User findUserById(Integer id);
 
-    List<User> findAllUsersWithoutLogInUser(String userName);
+    List<User> findAllUsersWithoutLogInUser(String username);
 
     void deleteById(Integer id);
 

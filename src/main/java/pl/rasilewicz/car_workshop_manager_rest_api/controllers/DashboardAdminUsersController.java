@@ -23,7 +23,7 @@ public class DashboardAdminUsersController {
     public List<User> userList (@PathVariable Integer userId) {
         User loggedInUser = userService.findUserById(userId);
 
-        return userService.findAllUsersWithoutLogInUser(loggedInUser.getUserName());
+        return userService.findAllUsersWithoutLogInUser(loggedInUser.getUsername());
     }
 
     @GetMapping("/admins/{userId}/users/{id}")
