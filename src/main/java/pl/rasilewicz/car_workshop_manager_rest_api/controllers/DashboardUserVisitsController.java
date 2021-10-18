@@ -41,19 +41,10 @@ public class DashboardUserVisitsController {
 
     }
 
-    @GetMapping("/dashboard/user/visits/delete")
-    public String viewingConfirmViewDeleteVisit (@RequestParam Integer id, Model model){
-        Order selectedVisit = orderService.findOrderById(id);
-        model.addAttribute("selectedVisit", selectedVisit);
-        model.addAttribute("id", id);
+    @DeleteMapping("/users/{userId}/visits/{visitId}/delete")
+    public void DeleteVisit (@PathVariable Integer visitId){
 
-        return "dashboardPages/user/confirmationDeleteVisit";
-    }
+        orderService.deleteById(visitId);
 
-    @PostMapping("/dashboard/user/visits/delete")
-    public String afterConfirmedBoxDeleteVisit (Integer id){
-        orderService.deleteById(id);
-
-        return "redirect:/dashboard/user/visits?visitDeleteSuccess";
     }
 }
