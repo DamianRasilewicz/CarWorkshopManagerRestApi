@@ -28,23 +28,10 @@ public class DashboardUserVisitsController {
         return orderService.findOrderById(visitId);
     }
 
-    @PostMapping("/dashboard/user/visits/details")
-    public String changedSelectedVisit (@ModelAttribute("selectedVisitId") Integer selectedVisitId, @ModelAttribute("wroteComment") String wroteComment,
-                                        @ModelAttribute("visitDateId") Integer visitDateId, @ModelAttribute("carId") Integer carId, RedirectAttributes redirectAttributes) {
+    @PutMapping("/users/{userId}/visits/{visitId}/details")
+    public Order changedSelectedVisit (@RequestBody Order order) {
 
-        Order selectedVisit = orderService.findOrderById(selectedVisitId);
-
-        selectedVisit.setCar(carService.findCarById(carId));
-//        selectedVisit.setVisitDate(visitDateService.findVisitDateById(visitDateId));
-        selectedVisit.setComment(wroteComment);
-        orderService.save(selectedVisit);
-
-
-        redirectAttributes.addAttribute("id", selectedVisit.getId());
-
-
-
-        return  "redirect:/dashboard/user/visits/details?success";
+        return  orderService.editOrder(order);
     }
 
     @GetMapping("/dashboard/user/lastVisits/delete")
