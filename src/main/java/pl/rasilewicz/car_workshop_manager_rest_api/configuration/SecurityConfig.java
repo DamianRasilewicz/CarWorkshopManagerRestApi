@@ -1,12 +1,15 @@
 package pl.rasilewicz.car_workshop_manager_rest_api.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 import javax.sql.DataSource;
 
@@ -15,14 +18,20 @@ import javax.sql.DataSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final DataSource datasource;
+    private final ObjectMapper objectMapper;
+    private final RestAuthenticationSuccessHandler successHandler;
+    private final RestAuthenticationFailureHandler failureHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(datasource)
-                .withUser("test")
-                .password("{bcrypt}" + new BCryptPasswordEncoder().encode("test"))
-                .roles("USER");
+                .usersByUsernameQuery("Select username, password, enabled " +
+                        "FROM car_workshop_manager.users WHERE username = ?")
+                .authoritiesByUsernameQuery("Select username, name " +
+                        "FROM car_workshop_manager.users LEFT JOIN roles on users.role_id = roles.id " +
+                        "WHERE username = ?")
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
@@ -53,6 +62,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().permitAll();
+                .addFilter(authenticationFilter())
+                .exceptionHandling()
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+    }
+
+    public JsonObjectAuthenticationFilter authenticationFilter() throws Exception {
+        JsonObjectAuthenticationFilter authenticationFilter = new JsonObjectAuthenticationFilter(objectMapper);
+        authenticationFilter.setAuthenticationSuccessHandler(successHandler);
+        authenticationFilter.setAuthenticationFailureHandler(failureHandler);
+        authenticationFilter.setAuthenticationManager(super.authenticationManager());
+        return authenticationFilter;
     }
 }
