@@ -11,6 +11,7 @@ import java.util.List;
 @EntityScan(basePackages = "pl.rasilewicz.car_workshop_manager.entities")
 public interface UserRepository extends JpaRepository<User, Integer> {
 
+    @Query(value = "SELECT * FROM car_workshop_manager.users WHERE username = ?", nativeQuery = true)
     User findUserByUsername(String username);
 
     User findUserById(Integer id);
