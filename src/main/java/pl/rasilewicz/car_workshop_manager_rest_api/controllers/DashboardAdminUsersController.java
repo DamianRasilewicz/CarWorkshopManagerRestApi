@@ -64,7 +64,7 @@ public class DashboardAdminUsersController {
     }
 
     @PutMapping("/admins/{userId}/users/{id}/userVisits/{visitId}")
-    public String selectedUserVisitEdited (@RequestBody Order editedOrder){
+    public Order selectedUserVisitEdited (@RequestBody Order editedOrder){
 
         orderService.editOrder(editedOrder);
 
@@ -82,6 +82,6 @@ public class DashboardAdminUsersController {
             mailService.sendEmail(editedOrder.getUser().getEmail(), "Car workshop manager. Your order's status has been changed!", body);
         }
 
-        return  "success";
+        return  editedOrder;
     }
 }

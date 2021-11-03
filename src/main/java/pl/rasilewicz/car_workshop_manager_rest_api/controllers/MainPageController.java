@@ -1,19 +1,15 @@
 package pl.rasilewicz.car_workshop_manager_rest_api.controllers;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.*;
 import pl.rasilewicz.car_workshop_manager_rest_api.services.*;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.*;
 
+@RestController
 @Controller
 public class MainPageController {
 
@@ -44,20 +40,15 @@ public class MainPageController {
     }
 
     @GetMapping("/appointmentDate")
-    public String appointmentDate(Model model){
+    public List<Workshop> appointmentDate(){
 
-        List<Workshop> workshopList = workshopService.findAllWorkshops();
-        model.addAttribute("workshopList", workshopList);
-
-        return "mainPages/appointmentDate";
+        return workshopService.findAllWorkshops();
     }
 
     @PostMapping("/appointmentDate")
-    public String inputedAppointmentDate (@ModelAttribute("selectedWorkshop") Integer workshopId,
-                                          @ModelAttribute("selectedDate") String selectedDate,
-                                          RedirectAttributes redirectAttributes){
-
-            LocalDate date = LocalDate.parse(selectedDate);
+    public Map<String, Object> inputtedAppointmentDate (@RequestBody Integer workshopId,
+                                          @RequestBody String selectedDate){
+      LocalDate date = LocalDate.parse(selectedDate);
       List<VisitDate> visitDatesSelectedWorkshop = visitDateService.findVisitDateByDateAndWorkshopId(date, workshopId);
 
       List<String> availableVisitTimeList = new ArrayList<>();
@@ -72,28 +63,25 @@ public class MainPageController {
 
         availableVisitTimeList.removeAll(noAvailableVisitTimeList);
 
-        redirectAttributes.addAttribute("availableVisitTimeList", availableVisitTimeList);
-        redirectAttributes.addAttribute("selectedWorkshopId", workshopId);
-        redirectAttributes.addAttribute("selectedDate", selectedDate);
+        Map<String, Object> summaryResult = new LinkedHashMap<>();
+        summaryResult.put("workshopId", workshopId);
+        summaryResult.put("selectedDate", selectedDate);
+        summaryResult.put("availableVisitTimeList", availableVisitTimeList);
 
-        return "redirect:/appointmentDetails";
+        return summaryResult;
     }
 
     @GetMapping("/appointmentDetails")
-    public String appointmentDetails(Model model, @RequestParam("availableVisitTimeList") List<String> availableVisitTimeList,
-                                     @RequestParam("selectedWorkshopId") Integer selectedWorkshopId,
-                                     @RequestParam("selectedDate") String selectedDate, HttpSession session){
+    public Map<String, Object> appointmentDetails(@RequestBody List<String> availableVisitTimeList,
+                                     @RequestBody Integer selectedWorkshopId,
+                                     @RequestBody String selectedDate, HttpSession session){
         User user = new User();
-        model.addAttribute("user", user);
 
         Order order = new Order();
-        model.addAttribute("order", order);
 
         Car car = new Car();
-        model.addAttribute("car", car);
 
         List<Task> taskList = taskService.findAllTasks();
-        model.addAttribute("allTasks", taskList);
         session.setAttribute("allTasks", taskList);
         System.out.println(taskList.toString());
 
@@ -108,37 +96,26 @@ public class MainPageController {
 
         List<String> engineTypesList = Arrays.asList("Benzine", "Diesel", "Hybrid", "Benzine + LPG", "CNG");
 
-        model.addAttribute("availableVisitTimeList", availableVisitTimeList);
-        session.setAttribute("availableVisitTimeList", availableVisitTimeList);
-        model.addAttribute("selectedWorkshopId", selectedWorkshopId);
-        model.addAttribute("selectedDate", selectedDate);
-        model.addAttribute("selectedWorkshop", selectedWorkshop);
-        session.setAttribute("selectedWorkshop", selectedWorkshop);
-        model.addAttribute("carBrandsList", carBrandsList);
-        session.setAttribute("carBrandsList", carBrandsList);
-        model.addAttribute("engineTypesList", engineTypesList);
-        session.setAttribute("engineTypesList", engineTypesList);
-        return "mainPages/appointmentDetails";
+        Map<String, Object> summaryResult = new LinkedHashMap<>();
+        summaryResult.put("user", user);
+        summaryResult.put("order", order);
+        summaryResult.put("car", car);
+        summaryResult.put("allTasks", taskList);
+        summaryResult.put("availableVisitTimeList", availableVisitTimeList);
+        summaryResult.put("selectedWorkshopId", selectedWorkshopId);
+        summaryResult.put("selectedDate", selectedDate);
+        summaryResult.put("selectedWorkshop", selectedWorkshop);
+        summaryResult.put("carBrandsList", carBrandsList);
+        summaryResult.put("engineTypesList", engineTypesList);
+
+        return summaryResult;
     }
 
     @PostMapping("/appointmentDetails")
-    public String inputtedAppointmentDetails(@ModelAttribute("user") @Valid User user, BindingResult resultUser, @ModelAttribute("order") @Valid Order order,
-                                             BindingResult resultOrder, @ModelAttribute("car") @Valid Car car, BindingResult resultCar, @ModelAttribute("selectedDate") String selectedDate,
-                                             @ModelAttribute("selectedVisitTime") String selectedTime, @RequestParam(value = "selectedTasks", required = false) Integer[] selectedTasks, Model model,
-                                             @SessionAttribute("availableVisitTimeList") List<String> availableVisitTimeList, @SessionAttribute("selectedWorkshop") Workshop selectedWorkshop,
-                                             SessionStatus sessionStatus, @SessionAttribute("carBrandsList") List<String> carBrandsList, @SessionAttribute("engineTypesList") List<String> engineTypesList,
-                                             @SessionAttribute("allTasks") List<Task> allTasks){
-
-
-        if (resultUser.hasErrors() || resultOrder.hasErrors() || resultCar.hasErrors()) {
-            model.addAttribute("selectedWorkshop", selectedWorkshop);
-            model.addAttribute("availableVisitTimeList", availableVisitTimeList);
-            model.addAttribute("carBrandsList", carBrandsList);
-            model.addAttribute("engineTypesList", engineTypesList);
-            model.addAttribute("allTasks", allTasks);
-
-            return "mainPages/appointmentDetails";
-        }
+    public VisitDate inputtedAppointmentDetails(@RequestBody User user, @RequestBody Order order, @RequestBody Car car, @RequestBody String selectedDate,
+                                             @RequestBody String selectedTime, @RequestParam(value = "selectedTasks", required = false) Integer[] selectedTasks,
+                                             @RequestBody List<String> availableVisitTimeList, @RequestBody Workshop selectedWorkshop, @RequestBody List<String> carBrandsList,
+                                             @RequestBody List<String> engineTypesList, @RequestBody List<Task> allTasks){
 
         Double estimatedExecutionTime = 0.00;
         Integer estimatedCost = 0;
@@ -178,7 +155,6 @@ public class MainPageController {
         selectedVisitDate.setDate(selectedDateParsed.toString());
         selectedVisitDate.setTime(selectedTime);
         selectedVisitDate.setWorkshop(selectedWorkshop);
-//        selectedVisitDate.setOrder(order);
         selectedVisitDate.setDay(selectedDateParsed.getDayOfMonth());
         selectedVisitDate.setMonth(selectedDateParsed.getMonthValue());
         selectedVisitDate.setYear(selectedDateParsed.getYear());
@@ -186,9 +162,7 @@ public class MainPageController {
 
         visitDateService.save(selectedVisitDate);
 
-        sessionStatus.setComplete();
-
-        return "redirect:/appointmentSuccess";
+        return selectedVisitDate;
     }
 
     @GetMapping("/appointmentSuccess")

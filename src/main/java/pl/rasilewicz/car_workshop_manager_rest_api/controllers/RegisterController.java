@@ -5,9 +5,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.Role;
 import pl.rasilewicz.car_workshop_manager_rest_api.entities.User;
 import pl.rasilewicz.car_workshop_manager_rest_api.services.RoleServiceImpl;
@@ -16,7 +14,7 @@ import pl.rasilewicz.car_workshop_manager_rest_api.services.UserServiceImpl;
 import javax.validation.Valid;
 import java.time.LocalDate;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class RegisterController {
 
@@ -24,16 +22,14 @@ public class RegisterController {
     private final UserServiceImpl userService;
 
     @GetMapping("/registration")
-    public String registerForm(Model model){
-        model.addAttribute("user", new User());
-        return "registrationPage/registrationForm";
+    public User registerForm(){
+
+        return new User();
     }
 
     @PostMapping("/registration")
-    public String registerFormFilled(@ModelAttribute("user") @Valid User user, BindingResult result){
-        if (result.hasErrors()) {
-            return "registrationPage/registrationForm";
-        }
+    public User registerFormFilled(@RequestBody User user){
+
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12)));
         user.setRegistered(true);
         user.setEnabled(true);
@@ -48,6 +44,6 @@ public class RegisterController {
 
         userService.save(user);
 
-        return "redirect:/registration?success";
+        return user;
     }
 }
